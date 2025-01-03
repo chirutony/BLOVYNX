@@ -1,0 +1,144 @@
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Dimensions,
+  LayoutAnimation,
+  Platform,
+  UIManager,
+} from 'react-native';
+
+const { width } = Dimensions.get('window');
+
+// Enable LayoutAnimation on Android
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+const KidInHelicopter = () => {
+  return (
+    <View style={styles.kidContainer}>
+      {/* Replace this placeholder with your actual kid-in-helicopter component */}
+      <Text style={styles.kidPlaceholder}>🚁 Kid in Helicopter</Text>
+    </View>
+  );
+};
+
+const LanguageSelectionScreen = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+  const languages = [
+    'Konkani',
+    'Kannada',
+    'Sanskrit',
+    'Bhojpuri',
+    'Telugu',
+    'Bengali',
+    'Tamil',
+  ];
+
+  const handleSelect = (language) => {
+    // Animate the layout change
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setSelectedLanguage(language);
+  };
+
+  return (
+    <View style={styles.container}>
+      {/* Kid in Helicopter */}
+      <KidInHelicopter />
+
+      {/* Question */}
+      <Text style={styles.question}>What Indian language would you like to learn?</Text>
+
+      {/* Language Options */}
+      <FlatList
+        data={languages}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={[
+              styles.languageButton,
+              selectedLanguage === item && styles.selectedButton,
+            ]}
+            onPress={() => handleSelect(item)}
+          >
+            <Text
+              style={[
+                styles.languageText,
+                selectedLanguage === item && styles.selectedText,
+              ]}
+            >
+              {item}
+            </Text>
+          </TouchableOpacity>
+        )}
+        contentContainerStyle={styles.languageList}
+      />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    paddingTop: 50,
+  },
+  kidContainer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  kidPlaceholder: {
+    fontSize: 22,
+    fontStyle: 'italic',
+    color: '#888',
+  },
+  question: {
+    fontSize: 18,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 20,
+    color: '#333',
+    paddingHorizontal: 20,
+  },
+  languageList: {
+    width: width * 0.9, // Adjust the list width for alignment
+  },
+  languageButton: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    marginVertical: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 25,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+    transitionProperty: 'background-color', // For web (ignored in React Native)
+    transitionDuration: '0.3s', // For web (ignored in React Native)
+  },
+  selectedButton: {
+    backgroundColor: '#007bff',
+    borderColor: '#007bff',
+  },
+  languageText: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#333',
+  },
+  selectedText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
+});
+
+export default LanguageSelectionScreen;
